@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Character } from '../rick-and-morty/interfaces'
+import { type Info, type Character } from '../rick-and-morty/interfaces'
 import {
   TOGGLE_SELECT_ALL_CHARACTERS,
   SELECT_CHARACTERS,
@@ -19,9 +19,15 @@ export const fetchCharacters = () => {
     dispatch({ type: SET_LOADING, payload: true })
 
     try {
-      const response = await axios.get(
+      const response = await axios.get<Info<Character[]>>(
         `${RICK_AND_MORTY_API_BASE_URL}/character`
       )
+
+      if (!response.data.results || response.data.results.length === 0) {
+        dispatch(setError('No characters found'))
+        return
+      }
+
       dispatch(setCharacters(response.data.results))
     } catch (e) {
       dispatch(setError(String(e)))
@@ -36,9 +42,15 @@ export const searchCharacters = (query: string) => {
     dispatch({ type: SET_LOADING, payload: true })
 
     try {
-      const response = await axios.get(
+      const response = await axios.get<Info<Character[]>>(
         `${RICK_AND_MORTY_API_BASE_URL}/character?name=${query}`
       )
+
+      if (!response.data.results || response.data.results.length === 0) {
+        dispatch(setError('No characters found'))
+        return
+      }
+
       dispatch(setSearchCharacters(response.data.results))
     } catch (e) {
       dispatch(setError(String(e)))
