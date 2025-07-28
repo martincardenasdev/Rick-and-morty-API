@@ -3,6 +3,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import './login.css'
 import { useState } from 'react'
 import credentials from './credentials.json'
+import { useAuth } from '../hooks/useAuth'
 
 interface LoginForm {
   email: string
@@ -11,6 +12,8 @@ interface LoginForm {
 }
 
 function Login() {
+  const { login } = useAuth()
+
   const [form, setForm] = useState<LoginForm>({
     email: '',
     password: '',
@@ -33,10 +36,9 @@ function Login() {
           form.password === credentials.password
         ) {
           setForm({ ...form, status: 'success' })
-          localStorage.setItem('loggedIn', 'true')
+          login()
         } else {
           setForm({ ...form, status: 'error' })
-          localStorage.setItem('loggedIn', 'false')
         }
       }}
     >
@@ -61,7 +63,7 @@ function Login() {
         htmlType="submit"
         size="large"
         danger={form.status === 'error'}
-        disabled={!isValidEmail(form.email)}
+        disabled={!isValidEmail(form.email) || form.password.length === 0}
       >
         Login
       </Button>
