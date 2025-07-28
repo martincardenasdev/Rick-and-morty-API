@@ -1,0 +1,39 @@
+.character-id-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.character-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.not-centered {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  font-size: 16px !important;
+  cursor: pointer;
+}
+
+.table-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 841.58px;
+  height: 849px;
+}

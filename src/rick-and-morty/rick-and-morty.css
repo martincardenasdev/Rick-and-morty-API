@@ -1,0 +1,5 @@
+.rick-and-morty {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
