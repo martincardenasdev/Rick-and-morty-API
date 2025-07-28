@@ -14,9 +14,12 @@ import {
 } from '../../redux/actions'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { useTypedSelector } from '../../redux/hooks'
 
-function Search({ characterIds }: { characterIds: number[] }) {
+function Search() {
   const dispatch = useDispatch()
+  const characterIds = useTypedSelector((state) => state.selectedCharacters)
+
   const [searchText, setSearchText] = useState('')
 
   const items: MenuProps['items'] = [

@@ -1,9 +1,11 @@
+import { useTypedSelector } from '../../redux/hooks'
 import './favorites-count.css'
 
-function FavoritesCount({ count }: { count: number }) {
+function FavoritesCount() {
+  const favorites = useTypedSelector((state) => state.favorites)
   return (
     <div className="favorites-count">
-      <span>Favorites count: {count}</span>
+      <span>Favorites count: {favorites.length}</span>
     </div>
   )
 }

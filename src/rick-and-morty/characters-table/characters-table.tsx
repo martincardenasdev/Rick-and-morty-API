@@ -10,21 +10,21 @@ import {
   toggleSelectAllCharacters,
 } from '../../redux/actions'
 import type { Character } from '../interfaces'
+import { useTypedSelector } from '../../redux/hooks'
 
-interface CharactersTableProps {
-  characters: Character[]
-  favorites: number[]
-  selectedCharacters: number[]
-  isLoading: boolean
-}
-
-function CharactersTable({
-  characters,
-  favorites,
-  selectedCharacters,
-  isLoading,
-}: CharactersTableProps) {
+function CharactersTable() {
   const dispatch = useDispatch()
+
+  const { characters, favorites, selectedCharacters, isLoading } =
+    useTypedSelector((state) => ({
+      characters:
+        state.searchCharacters && state.searchCharacters.length > 0
+          ? state.searchCharacters
+          : state.characters,
+      favorites: state.favorites,
+      selectedCharacters: state.selectedCharacters,
+      isLoading: state.isLoading,
+    }))
 
   const handleToggleFavorite = (characterId: number) => {
     const character = characters.find((c) => c.id === characterId)
