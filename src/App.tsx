@@ -10,11 +10,7 @@ function App() {
     return <Login />
   }
 
-  return (
-    <>
-      <RickAndMorty />
-    </>
-  )
+  return <RickAndMorty />
 }
 
 export default App
