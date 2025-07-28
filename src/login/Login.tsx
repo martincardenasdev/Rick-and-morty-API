@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd'
+import { Button, Input, message } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import './login.css'
 import { useState } from 'react'
@@ -35,9 +35,11 @@ function Login() {
           form.email === credentials.email &&
           form.password === credentials.password
         ) {
+          message.success('Welcome back!')
           setForm({ ...form, status: 'success' })
           login()
         } else {
+          message.error('Invalid email or password')
           setForm({ ...form, status: 'error' })
         }
       }}
