@@ -7,13 +7,9 @@ import { selectCharacterDetails } from '../../redux/actions'
 function CharacterModal() {
   const dispatch = useDispatch()
   const onModal = useTypedSelector((state) => state.onModal)
-  const characters = useTypedSelector((state) =>
-    state.searchCharacters && state.searchCharacters.length > 0
-      ? state.searchCharacters
-      : state.characters
-  )
+  const characters = useTypedSelector((state) => state.characters)
 
-  const character = characters.find((c) => c.id === onModal) || null
+  const character = characters?.results?.find((c) => c.id === onModal) || null
 
   const aliveTagColor = () => {
     switch (character?.status) {

@@ -4,10 +4,10 @@ import { InfoCircleOutlined, StarTwoTone } from '@ant-design/icons'
 import './characters-table.css'
 import { useDispatch } from 'react-redux'
 import {
+  fetchCharacters,
   selectCharacterDetails,
   selectCharacters,
   toggleFavorite,
-  toggleSelectAllCharacters,
 } from '../../redux/actions'
 import type { Character } from '../interfaces'
 import { useTypedSelector } from '../../redux/hooks'
@@ -15,19 +15,11 @@ import { useTypedSelector } from '../../redux/hooks'
 function CharactersTable() {
   const dispatch = useDispatch()
 
-  const { characters, favorites, selectedCharacters, isLoading } =
-    useTypedSelector((state) => ({
-      characters:
-        state.searchCharacters && state.searchCharacters.length > 0
-          ? state.searchCharacters
-          : state.characters,
-      favorites: state.favorites,
-      selectedCharacters: state.selectedCharacters,
-      isLoading: state.isLoading,
-    }))
+  const { characters, query, favorites, selectedCharacters, isLoading } =
+    useTypedSelector((state) => state)
 
   const handleToggleFavorite = (characterId: number) => {
-    const character = characters.find((c) => c.id === characterId)
+    const character = characters?.results?.find((c) => c.id === characterId)
 
     if (favorites.includes(characterId)) {
       message.success(`Removing ${character?.name} from favorites`)
@@ -43,12 +35,14 @@ function CharactersTable() {
       title: (
         <div className="not-centered">
           <Checkbox
-            checked={selectedCharacters.length === characters.length}
-            onChange={(e) => {
+            checked={
+              characters?.results?.every((c) =>
+                selectedCharacters.includes(c.id)
+              ) ?? false
+            }
+            onChange={() => {
               dispatch(
-                toggleSelectAllCharacters(
-                  e.target.checked ? characters.map((c) => c.id) : []
-                )
+                selectCharacters(characters?.results?.map((c) => c.id) ?? [])
               )
             }}
           />
@@ -123,7 +117,29 @@ function CharactersTable() {
     <Table<Character>
       rowKey="id"
       columns={columns}
-      dataSource={characters}
+      dataSource={characters?.results}
+      pagination={{
+        pageSize: 20,
+        total: characters?.info?.count ?? 0,
+        current: (() => {
+          const next = characters?.info?.next
+          const prev = characters?.info?.prev
+
+          if (next) {
+            const nextPageMatch = next.match(/[?&]page=(\d+)/)
+            return nextPageMatch ? Math.max(1, Number(nextPageMatch[1]) - 1) : 1
+          } else if (prev) {
+            const prevPageMatch = prev.match(/[?&]page=(\d+)/)
+            return prevPageMatch ? Number(prevPageMatch[1]) + 1 : 1
+          }
+          return 1
+        })(),
+        showSizeChanger: false,
+        showQuickJumper: false,
+        onChange: (page) => {
+          dispatch(fetchCharacters(query, page))
+        },
+      }}
       components={{
         body: {
           row: (
@@ -132,7 +148,7 @@ function CharactersTable() {
             }
           ) => {
             const rowKey = props['data-row-key']
-            const currentCharacter = characters.find(
+            const currentCharacter = characters?.results?.find(
               (c) => c.id === Number(rowKey)
             )
 

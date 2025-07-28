@@ -1,23 +1,22 @@
-import type { Character } from '../../rick-and-morty/interfaces'
+import type { Character, Info } from '../../rick-and-morty/interfaces'
 import {
-  TOGGLE_SELECT_ALL_CHARACTERS,
   SELECT_CHARACTERS,
   SET_CHARACTERS,
   SET_ERROR,
   SET_LOADING,
   TOGGLE_FAVORITE,
   SELECT_CHARACTER_DETAILS,
-  SEARCH_CHARACTERS,
+  SET_QUERY,
 } from './actionTypes'
 
 interface SetCharactersAction {
   type: typeof SET_CHARACTERS
-  payload: Character[]
+  payload: Info<Character[]>
 }
 
-interface SearchCharactersAction {
-  type: typeof SEARCH_CHARACTERS
-  payload: Character[]
+interface SetQueryAction {
+  type: typeof SET_QUERY
+  payload: string
 }
 
 interface SelectCharactersAction {
@@ -28,11 +27,6 @@ interface SelectCharactersAction {
 interface SelectCharacterDetailsAction {
   type: typeof SELECT_CHARACTER_DETAILS
   payload: number
-}
-
-interface ToggleSelectAllCharactersAction {
-  type: typeof TOGGLE_SELECT_ALL_CHARACTERS
-  payload: number[]
 }
 
 interface ToggleFavoriteAction {
@@ -52,10 +46,9 @@ interface SetErrorAction {
 
 export type CharacterActionTypes =
   | SetCharactersAction
-  | SearchCharactersAction
+  | SetQueryAction
   | SelectCharactersAction
   | SelectCharacterDetailsAction
-  | ToggleSelectAllCharactersAction
   | ToggleFavoriteAction
   | SetLoadingAction
   | SetErrorAction

@@ -7,20 +7,18 @@ import {
 } from '@ant-design/icons'
 import './search.css'
 import {
-  searchCharacters,
+  fetchCharacters,
   selectCharacterDetails,
-  setSearchCharacters,
+  setQuery,
   toggleFavorite,
 } from '../../redux/actions'
 import { useDispatch } from 'react-redux'
-import { useState } from 'react'
 import { useTypedSelector } from '../../redux/hooks'
 
 function Search() {
   const dispatch = useDispatch()
   const characterIds = useTypedSelector((state) => state.selectedCharacters)
-
-  const [searchText, setSearchText] = useState('')
+  const query = useTypedSelector((state) => state.query)
 
   const items: MenuProps['items'] = [
     {
@@ -52,16 +50,16 @@ function Search() {
       <Input
         onChange={(e) => {
           if (e.target.value.length > 0) {
-            setSearchText(e.target.value)
+            dispatch(setQuery(e.target.value))
           } else {
-            dispatch(setSearchCharacters([]))
+            dispatch(fetchCharacters())
           }
         }}
         placeholder="Search in this group"
       />
       <SearchOutlined
         className="search-icon"
-        onClick={() => dispatch(searchCharacters(searchText))}
+        onClick={() => dispatch(fetchCharacters(query))}
       />
       <Dropdown menu={{ items }} trigger={['click']}>
         <Space className="actions">
