@@ -114,7 +114,7 @@ function CharactersTable({
   if (isLoading) {
     return (
       <div className="table-layout">
-        <Spin tip="Loading" size="large" />
+        <Spin size="large" />
       </div>
     )
   }
