@@ -7,4 +7,22 @@
     font-size: 2rem;
     margin: 0;
   }
+
+  .character-content {
+    gap: 16px;
+  }
+
+  .character-details {
+    gap: 16px;
+  }
+
+  .tags-container {
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .episodes-badge {
+    gap: 8px;
+    align-items: center;
+  }
 }

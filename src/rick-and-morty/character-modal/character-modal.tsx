@@ -33,16 +33,16 @@ function CharacterModal() {
         dispatch(selectCharacterDetails(null))
       }}
     >
-      <Flex gap={16}>
+      <Flex className="character-content">
         <Image src={character?.image} alt={character?.name} width={200} />
-        <Flex vertical gap={16}>
+        <Flex vertical className="character-details">
           <h1>{character?.name}</h1>
-          <Flex gap={4} align="start">
+          <Flex className="tags-container">
             <Tag color={aliveTagColor()}>{character?.status}</Tag>
             <Tag color="blue">{character?.origin.name}</Tag>
             <Tag color="blue">{character?.species}</Tag>
           </Flex>
-          <Flex align="center" gap={8}>
+          <Flex className="episodes-badge">
             <Badge color="blue" count={character?.episode.length} /> Episodes
           </Flex>
         </Flex>
