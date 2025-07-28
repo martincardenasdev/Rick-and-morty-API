@@ -3,12 +3,12 @@ import './character-modal.css'
 import { useTypedSelector } from '../../redux/hooks'
 import { useDispatch } from 'react-redux'
 import { selectCharacterDetails } from '../../redux/actions'
+import type { Character } from '../interfaces'
 
-function CharacterModal() {
+function CharacterModal({ characters }: { characters: Character[] }) {
   const dispatch = useDispatch()
-  const character = useTypedSelector((state) => {
-    return state.characters.find((c) => c.id === state.onModal) || null
-  })
+  const onModal = useTypedSelector((state) => state.onModal)
+  const character = characters.find((c) => c.id === onModal) || null
 
   const aliveTagColor = () => {
     switch (character?.status) {

@@ -6,6 +6,7 @@ import { useTypedSelector } from '../redux/hooks'
 import FavoritesCount from './favorites-count/favorites-count'
 import Search from './search/search'
 import './rick-and-morty.css'
+import CharacterModal from './character-modal/character-modal'
 
 function RickAndMorty() {
   const dispatch = useDispatch()
@@ -30,16 +31,19 @@ function RickAndMorty() {
   }, [dispatch])
 
   return (
-    <div className="rick-and-morty">
-      <Search characterIds={selectedCharacters} />
-      <CharactersTable
-        characters={charactersFactory()}
-        favorites={favorites}
-        selectedCharacters={selectedCharacters}
-        isLoading={isLoading}
-      />
-      <FavoritesCount count={favorites.length} />
-    </div>
+    <>
+      <CharacterModal characters={charactersFactory()} />
+      <div className="rick-and-morty">
+        <Search characterIds={selectedCharacters} />
+        <CharactersTable
+          characters={charactersFactory()}
+          favorites={favorites}
+          selectedCharacters={selectedCharacters}
+          isLoading={isLoading}
+        />
+        <FavoritesCount count={favorites.length} />
+      </div>
+    </>
   )
 }
 
