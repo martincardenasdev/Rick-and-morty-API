@@ -19,6 +19,12 @@ import { useRef } from 'react'
 function Search() {
   const dispatch = useDispatch()
   const characterIds = useTypedSelector((state) => state.selectedCharacters)
+  const characters = useTypedSelector((state) => state.characters.results)
+
+  const characterIdsInCurrPage = (characters ?? [])
+    .filter((character) => characterIds.includes(character.id))
+    .map((x) => x.id)
+
   const query = useTypedSelector((state) => state.query)
   const prevQuery = useRef<string>('')
 
@@ -27,20 +33,20 @@ function Search() {
       key: '1',
       icon: <StarOutlined />,
       label: 'Revert selected favorites',
-      disabled: characterIds.length === 0,
+      disabled: characterIdsInCurrPage.length === 0,
       onClick: () => {
         message.info('Reverting selected favorites')
-        dispatch(toggleFavorite(characterIds))
+        dispatch(toggleFavorite(characterIdsInCurrPage))
       },
     },
-    ...(characterIds.length === 1
+    ...(characterIdsInCurrPage.length === 1
       ? [
           {
             key: '2',
             icon: <InfoCircleOutlined />,
             label: 'Details',
             onClick: () => {
-              dispatch(selectCharacterDetails(characterIds[0]))
+              dispatch(selectCharacterDetails(characterIdsInCurrPage[0]))
             },
           },
         ]
