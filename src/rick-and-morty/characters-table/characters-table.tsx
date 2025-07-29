@@ -40,9 +40,20 @@ function CharactersTable() {
                 selectedCharacters.includes(c.id)
               ) ?? false
             }
-            onChange={() => {
+            onChange={(e) => {
+              const isChecked = e.target.checked
+              message.info(
+                `${isChecked ? 'Selecting' : 'Deselecting'} all characters`
+              )
+
               dispatch(
-                selectCharacters(characters?.results?.map((c) => c.id) ?? [])
+                selectCharacters(
+                  characters?.results
+                    ?.filter(
+                      (c) => selectedCharacters.includes(c.id) !== isChecked
+                    )
+                    .map((x) => x.id) ?? []
+                )
               )
             }}
           />
