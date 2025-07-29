@@ -14,11 +14,13 @@ import {
 } from '../../redux/actions'
 import { useDispatch } from 'react-redux'
 import { useTypedSelector } from '../../redux/hooks'
+import { useRef } from 'react'
 
 function Search() {
   const dispatch = useDispatch()
   const characterIds = useTypedSelector((state) => state.selectedCharacters)
   const query = useTypedSelector((state) => state.query)
+  const prevQuery = useRef<string>('')
 
   const items: MenuProps['items'] = [
     {
@@ -49,9 +51,9 @@ function Search() {
     <div className="search-container">
       <Input
         onChange={(e) => {
-          if (e.target.value.length > 0) {
-            dispatch(setQuery(e.target.value))
-          } else {
+          dispatch(setQuery(e.target.value))
+
+          if (e.target.value.length === 0) {
             dispatch(fetchCharacters())
           }
         }}
@@ -59,7 +61,20 @@ function Search() {
       />
       <SearchOutlined
         className="search-icon"
-        onClick={() => dispatch(fetchCharacters(query))}
+        onClick={() => {
+          if (!query || query.length === 0) {
+            message.warning('Please enter a search term')
+            return
+          }
+
+          if (query === prevQuery.current) {
+            message.info('You are already searching for this term')
+            return
+          }
+
+          dispatch(fetchCharacters(query))
+          prevQuery.current = query
+        }}
       />
       <Dropdown menu={{ items }} trigger={['click']}>
         <Space className="actions">
